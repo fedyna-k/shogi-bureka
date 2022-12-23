@@ -1,6 +1,6 @@
 # 将棋ブレーカー  (Shōgi Breaker)
 
-<p style="text-align: center">
+<p align="center">
     <img alt="logo" src=".docs/logo.svg" width=256>
 </p>
 
