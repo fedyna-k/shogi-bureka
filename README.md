@@ -1,5 +1,9 @@
 # 将棋ブレーカー  (Shōgi Breaker)
 
+<p style="text-align: center">
+    <img alt="logo" src=".docs/logo.svg" width=256>
+</p>
+
 Shōgi Breaker (ou SB pour les intimes) est une IA qui peut jouer au Shōgi.
 
 ## Règles du jeu
