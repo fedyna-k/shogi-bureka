@@ -1,6 +1,6 @@
 /**
  * ----------------------------------------------
- *                     bool.h
+ *                  direction.h
  * ----------------------------------------------
  * 
  * Simple redefinition of char for more readable
@@ -8,11 +8,11 @@
  */
 
 
-#ifndef __BOOL_H__
-#define __BOOL_H__
+#ifndef __DIRECTION_H__
+#define __DIRECTION_H__
 
 
-typedef char Bool;
+typedef char Direction;
 
 
 #endif
