@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "move.h"
-#include "position.h"
 
 
 /**

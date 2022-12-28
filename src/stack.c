@@ -10,7 +10,6 @@
 
 
 #include "stack.h"
-#include "lists.h"
 #include <assert.h>
 #include <stdlib.h>
 

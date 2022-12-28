@@ -1,6 +1,6 @@
 /**
  * ----------------------------------------------
- *                   movemap.h
+ *                   movemap.c
  * ----------------------------------------------
  * 
  * Encoding of a movemap for a given piece in a
