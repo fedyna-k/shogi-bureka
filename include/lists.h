@@ -16,16 +16,15 @@
 
 
 #include "bool.h"
+#include "variant.h"
 
 
 // ----- Constants and structs -----
 
 #define LINK_SIZE sizeof(struct __s_List)
 
-typedef void *ListElem;
-
 struct __s_List {
-    ListElem element;
+    Variant element;
     struct __s_List *next;
 };
 
@@ -38,8 +37,8 @@ typedef struct __s_List *List;
 
 List createEmptyList();
 Bool isEmptyList(List _list);
-List addList(ListElem _data, List _list);
-ListElem headList(List _list);
+List addList(Variant _data, List _list);
+Variant headList(List _list);
 List tailList(List _list);
 
 // Toolbox

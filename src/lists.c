@@ -42,7 +42,7 @@ Bool isEmptyList(List _list) {
  * @param _list The list in which to add
  * @return A pointer to the newly added element
  */
-List addList(ListElem _data, List _list) {
+List addList(Variant _data, List _list) {
     List new_list = malloc(LINK_SIZE);
     new_list->element = _data;
     new_list->next = _list;
@@ -55,7 +55,7 @@ List addList(ListElem _data, List _list) {
  * @param _list A linked list
  * @return The head of the list
  */
-ListElem headList(List _list){
+Variant headList(List _list){
     return _list->element;
 }
 
@@ -89,28 +89,44 @@ void printList(List _list){
 // ------ Memory management functions -----
 
 
-List copy(List l){
-    if(!is_empty_list(l)){
-        return (add(head(l),copy(tail(l))));
+/**
+ * Copy a list
+ * @param _list The list we want to copy
+ * @return A copy of the list
+ */
+List copy(List _list){
+    if(!isEmptyList(_list)){
+        return (addList(headList(_list), copy(tailList(_list))));
     }
     else{
-        return create_empty_list();
+        return createEmptyList();
     }
 }
 
-List freeHead(List l){
-    assert(!is_empty_list(l));
-    List tmp = l->next;
-    free(l);
+
+/**
+ * Free the head of a list
+ * @param _list The list we want to behead
+ * @return The tail of the list
+ */
+List freeHead(List _list){
+    assert(!isEmptyList(_list));
+    List tmp = _list->next;
+    free(_list);
     return tmp;
 }
 
-void freeList(List l){
-    if(is_empty_list(l)){
+
+/**
+ * Free an entire list
+ * @param _list The list we want to kill
+ */
+void freeList(List _list){
+    if(isEmptyList(_list)){
         return;
     }
     else{
-        free_list(tail(l));
-        free(l);
+        freeList(tail(_list));
+        free(_list);
     }
 }
