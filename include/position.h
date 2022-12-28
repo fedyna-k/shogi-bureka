@@ -1,6 +1,6 @@
 /**
  * ----------------------------------------------
- *                     bool.h
+ *                  position.h
  * ----------------------------------------------
  * 
  * Simple redefinition of char for more readable
@@ -8,11 +8,11 @@
  */
 
 
-#ifndef __BOOL_H__
-#define __BOOL_H__
+#ifndef __POSITION_H__
+#define __POSITION_H__
 
 
-typedef char Bool;
+typedef char Position;
 
 
 #endif

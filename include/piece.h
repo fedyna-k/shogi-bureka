@@ -2,8 +2,8 @@
 #define __PIECE_H__
 
 #include "string.h"
+#include "movemap.h"
 
-typedef char Position;
 
 typedef struct zPiece {
     String name;

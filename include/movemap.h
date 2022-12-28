@@ -7,6 +7,7 @@
 #include "listes.h"
 
 typedef char *** MoveMap;
+typedef char Moveset;
 
 Bool canMoveAt(MoveMap map, Position position);
 List getMovesAt(MoveMap map, Position position);

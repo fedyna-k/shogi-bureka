@@ -8,7 +8,6 @@
  * You may include this file in every source file
  * that uses these constants in order to make the
  * code more readable and easier to change.
- * 
  */
 
 
@@ -133,6 +132,4 @@
 #define DIRECTION_COUNT_PAWN    1
 
 
-
 #endif
-
