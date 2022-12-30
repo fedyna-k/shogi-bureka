@@ -3,8 +3,7 @@
  *                  direction.h
  * ----------------------------------------------
  * 
- * Simple redefinition of char for more readable
- * code.
+ * Add direction handling
  */
 
 
@@ -12,7 +11,21 @@
 #define __DIRECTION_H__
 
 
-typedef char Direction;
+// ----- Constants and structs -----
+
+
+struct __s_Direction {
+    char dx;
+    char dy;
+};
+
+typedef struct __s_Direction Direction;
+
+
+// ----- Functions -----
+
+
+char getTotalOffset(Direction _direction);
 
 
 #endif
