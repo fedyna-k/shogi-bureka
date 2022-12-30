@@ -131,5 +131,19 @@
  */
 #define DIRECTION_COUNT_PAWN    1
 
+#define TOP             {0, 1}
+#define TOP_RIGHT       {1, 1}
+#define RIGHT           {1, 0}
+#define BOTTOM_RIGHT    {1, -1}
+#define BOTTOM          {0, -1}
+#define BOTTOM_LEFT     {-1, -1}
+#define LEFT            {-1, 0}
+#define TOP_LEFT        {-1, 1}
+
+#define KNIGHT_TL       {-1, 2}
+#define KNIGHT_TR       {1, 2}
+#define KNIGHT_BL       {-1, -2}
+#define KNIGHT_BR       {1, -2}
+
 
 #endif
