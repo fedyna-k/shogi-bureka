@@ -22,12 +22,14 @@
 // ----- Constants and structs -----
 
 
-typedef struct zPiece {
+struct __s_Piece {
     String name;
     char team;
     Position position;
     Moveset moveset;
-} Piece;
+};
+
+typedef struct __s_Piece Piece;
 
 
 // ----- Functions -----
