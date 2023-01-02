@@ -13,7 +13,7 @@
  *  first_move->next = NULL <=> plus de mouvments
  * 
  * If a piece has no movement at a given position
- * We store a -1 in MOVEMAP[start].
+ * We store a NULL pointer in MOVEMAP[start].
  */
 
 
@@ -24,7 +24,6 @@
 // ----- Dependancy -----
 
 
-#include "moveset.h"
 #include "bool.h"
 #include "position.h"
 #include "lists.h"
@@ -33,8 +32,8 @@
 // ----- Constants and structs -----
 
 
-typedef List ** MoveMap;
-typedef List * MoveCollection;
+typedef List **MoveMap;
+typedef List *MoveCollection;
 
 
 // ----- Functions -----

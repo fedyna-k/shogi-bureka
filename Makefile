@@ -1,7 +1,7 @@
 # Compilator's variables
 
 CC 		= gcc
-CFLAGS 	= -I include -I include/SDL2 -L lib -lmingw32 -lSDL2main -lSDL2	# Add SDL support on the linker
+CFLAGS 	= -Iinclude -Iinclude\SDL2 -L lib -lmingw32 -lSDL2main -lSDL2 # Add SDL support on the linker
 RM	 	= del	# Windows = del // Unix = rm
 
 SOURCEDIR = src
@@ -27,4 +27,4 @@ $(SOURCEDIR)/%.o: $(SOURCEDIR)/%.c $(SOURCEDIR)/%.h
 # May come in handy
 
 clear:
-	$(DELETE) $(SOURCEDIR)/*.o ; $(DELETE) $(OUTPUTDIR)/main
+	$(RM) $(SOURCEDIR)\*.o ; $(RM) $(OUTPUTDIR)\main
