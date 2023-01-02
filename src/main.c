@@ -14,10 +14,19 @@
 
 
 int main (int argc, char **argv) {
-    SDL_version nb;
-    SDL_VERSION(&nb);
+    SDL_Window *window = createMainWindow();
+    SDL_Renderer *renderer = createRenderer(window);
 
-    printf("%d.%d.%d", nb.major, nb.minor, nb.patch);
+    fillBackground(renderer);    
+    drawBoardBackground(renderer);
 
-    return 0;
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(3000);
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return EXIT_SUCCESS;
 }

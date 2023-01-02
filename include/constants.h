@@ -20,6 +20,7 @@
 
 #define BOARD_LENGTH    9
 #define BOARD_SIZE      81
+#define SQUARE_SIZE     64
 
 
 // ----- Sprites -----
@@ -28,6 +29,7 @@
 #define SPRITE_DIRECTORY    "sprites"
 #define CHESS_SPRITES       "chess-like"
 #define JAPANESE_SPRITES    "japanese"
+#define SPRITE_SIZE         64
 
 
 // ----- Pieces -----
