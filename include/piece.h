@@ -32,7 +32,7 @@ struct __s_Piece {
     Moveset moveset;
 };
 
-typedef struct __s_Piece Piece;
+typedef struct __s_Piece * Piece;
 
 
 // ----- Functions -----

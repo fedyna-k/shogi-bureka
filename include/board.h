@@ -30,9 +30,10 @@ struct __s_Board {
     List second_player_hand;
     double score;
     BigInt hash_key;
+    Bool team;
 };
 
-typedef __s_Board Board;
+typedef struct __s_Board * Board;
 
 
 // ----- Functions -----
