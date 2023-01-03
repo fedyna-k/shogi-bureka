@@ -14,6 +14,8 @@
 // ----- Dependancy -----
 
 
+#include <SDL.h>
+#include "bool.h"
 #include "string.h"
 #include "movemap.h"
 #include "moveset.h"
@@ -24,7 +26,8 @@
 
 struct __s_Piece {
     String name;
-    char team;
+    SDL_Texture *texture;
+    Bool team;
     Position position;
     Moveset moveset;
 };
@@ -33,9 +36,6 @@ typedef struct __s_Piece Piece;
 
 
 // ----- Functions -----
-
-
-String getImageLink(Piece _piece, char _option);
 
 
 #endif

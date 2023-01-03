@@ -126,7 +126,7 @@ void freeList(List _list){
         return;
     }
     else{
-        freeList(tail(_list));
+        freeList(tailList(_list));
         free(_list);
     }
 }

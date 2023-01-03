@@ -13,7 +13,7 @@
  *  first_move->next = NULL <=> plus de mouvments
  * 
  * If a piece has no movement at a given position
- * We store a -1 in MOVEMAP[start].
+ * We store a NULL pointer in MOVEMAP[start].
  */
 
 
@@ -27,7 +27,7 @@
  * @param _position The current position of the piece
  */
 Bool canMoveAt(MoveMap _map, Position _position){
-    return _map[_position] != -1;
+    return _map[_position] != NULL;
 }
 
 
