@@ -256,15 +256,26 @@ void drawPiece(SDL_Renderer *_renderer, Piece _piece) {
     y_offset = (screen_height - SQUARE_SIZE * BOARD_LENGTH) / 2;
     
     // Get coordinates
-    x = getX(_piece.position) * SQUARE_SIZE + x_offset;
-    y = getY(_piece.position) * SQUARE_SIZE + y_offset;
+    x = getX(_piece->position) * SQUARE_SIZE + x_offset;
+    y = getY(_piece->position) * SQUARE_SIZE + y_offset;
 
     // Set informations for drawing
     drawing_rect = (SDL_Rect){x, y, SPRITE_SIZE, SPRITE_SIZE};
-    rotation_angle = _piece.team ? 180.0f : 0.0f;
+    rotation_angle = _piece->team ? 0.0f : 180.0f;
 
     // Draw piece on renderer
-    if (SDL_RenderCopyEx(_renderer, _piece.texture, NULL, &drawing_rect, rotation_angle, NULL, SDL_FLIP_NONE) != 0) {
+    if (SDL_RenderCopyEx(_renderer, _piece->texture, NULL, &drawing_rect, rotation_angle, NULL, SDL_FLIP_NONE) != 0) {
         exitOnError("Impossible d'afficher la piece.");
+    }
+}
+
+
+void drawBoard(SDL_Renderer *_renderer, Board _board) {
+    int i;
+
+    for (i = 0 ; i < BOARD_SIZE ; i++) {
+        if (_board->board_piece[i] != NULL) {
+            drawPiece(_renderer, _board->board_piece[i]);
+        }
     }
 }
