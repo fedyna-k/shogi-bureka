@@ -1,7 +1,7 @@
 # Compilator's variables
 
 CC 		= gcc
-CFLAGS 	= -I include -I include/SDL2 -L lib -lmingw32 -lSDL2main -lSDL2 -mwindows # Add SDL support on the linker
+CFLAGS 	= -I include -I include/SDL2 -L lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -mwindows # Add SDL support on the linker
 RM	 	= del	# Windows = del // Unix = rm
 
 SOURCEDIR = src

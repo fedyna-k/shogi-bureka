@@ -26,7 +26,7 @@
 String concat(String _first_string, String _second_string){
     int i;
     String result;
-    result.value = malloc(sizeof(char) * (_first_string.length + _second_string.length));
+    result.value = malloc(sizeof(char) * (_first_string.length + _second_string.length) + 1);
 
     // Copy of first string
     for (i = 0; i < _first_string.length; i++){
@@ -39,6 +39,7 @@ String concat(String _first_string, String _second_string){
 
     // Length of the combined strings
     result.length = _first_string.length + _second_string.length;
+    result.value[result.length] = 0;
 
     return result;
 }

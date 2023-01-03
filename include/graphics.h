@@ -15,8 +15,12 @@
 
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include <stdlib.h>
 #include "constants.h"
 #include "bool.h"
+#include "string.h"
+#include "piece.h"
 
 
 // ----- Constants and structs -----
@@ -42,9 +46,15 @@ void printSystemInfo(void);
 void exitOnError(const char *_error_message);
 SDL_Window *createMainWindow(void);
 SDL_Renderer *createRenderer(SDL_Window *_window);
+
 void fillRectangle(SDL_Renderer *_renderer, int _x, int _y, int _width, int _height, Color _color);
 void fillBackground(SDL_Renderer *_renderer);
 void drawBoardBackground(SDL_Renderer *_renderer);
+
+SDL_Texture *loadImage(SDL_Renderer *_renderer, const char *_path);
+SDL_Texture **generatePiecesTextures(SDL_Renderer *_renderer, Bool _is_chess_like);
+void freePiecesTextures(SDL_Texture **_texture_array);
+void drawPiece(SDL_Renderer *_renderer, Piece _piece);
 
 
 #endif

@@ -26,9 +26,9 @@
 // ----- Sprites -----
 
 
-#define SPRITE_DIRECTORY    "sprites"
-#define CHESS_SPRITES       "chess-like"
-#define JAPANESE_SPRITES    "japanese"
+#define SPRITE_DIRECTORY    "sprites/"
+#define CHESS_SPRITES       "chess-like/"
+#define JAPANESE_SPRITES    "japanese/"
 #define SPRITE_SIZE         64
 
 
@@ -37,6 +37,7 @@
 
 #define DIRECTION_NUMBER    8
 #define MAX_SLIDING_LENGTH  9
+#define PIECES_COUNT        15
 
 /**
  * Movement type count :
