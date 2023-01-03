@@ -185,6 +185,8 @@ void initBoard(Board _board, SDL_Texture **_textures, String _SFEN) {
 
         generatePiece(current_char, current_piece, _textures, is_promoted);
 
+        _board->board_piece[board_index] = current_piece;
+
         board_index++;
         is_promoted = 0;
     }
