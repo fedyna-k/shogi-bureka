@@ -49,11 +49,12 @@ void freeBoard(Board board){
 
 
 // Returns a board with a move in parameter made
-Board makeMove(Board board, Move move){
-    Board res = copyBoard(board);
+void makeMove(Board board, Move move){
+    board->board_piece[move.ending_square] = board->board_piece[move.starting_square];
+    board->board_piece[move.starting_square] = NULL;
+}
 
-    res->board_piece[move.ending_square] = board->board_piece[move.starting_square];
-    res->board_piece[move.starting_square] = NULL;
 
-    return board;
+void dropPiece(Board board, Piece piece) {
+    
 }
