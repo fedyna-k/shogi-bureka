@@ -23,7 +23,7 @@ Board createNewBoard() {
     res->team = 0;
 
     return res;
-}
+}/*
 
 // Copy the board
 Board copyBoard(Board board) {
@@ -104,7 +104,7 @@ Bool canDropAt(Board board, Piece piece, Position position) {
         // A pawn can not be dropped in front of the king to check mate
         // TO DO------------------------------------------------------------
     }
-}
+}*/
 
 void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted) {
     switch (_symbol) {
@@ -198,7 +198,8 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
 
 
 void initBoard(Board _board, SDL_Texture **_textures, String _SFEN) {
-    int string_parser, board_index = 0;
+    int string_parser, board_index = 0, next_step, piece_multiplier = 1;
+    int slash_count = 0, sfen_part = 0;
     char current_char;
     Bool is_promoted;
     Piece current_piece;
@@ -210,33 +211,81 @@ void initBoard(Board _board, SDL_Texture **_textures, String _SFEN) {
 
         // If the current char is a numeric symbol
         if ('1' <= current_char && current_char <= '9') {
-            // Fill in the blanks
-            for (board_index ; board_index < board_index + current_char - '0'; board_index++) {
-                _board->board_piece[board_index] = NULL;
+            if (sfen_part == 0) {
+                // Fill in the blanks
+                next_step = board_index + current_char - '0';
+                for (board_index ; board_index < next_step ; board_index++) {
+                    _board->board_piece[board_index] = NULL;
+                }
+            } else {
+                piece_multiplier = current_char - '0';
             }
             continue;
         }
 
         // Handle promoted pieces
         if (current_char == '+') {
+            if (sfen_part != 0) {
+                exit(EXIT_FAILURE);
+            }
             is_promoted = 1;
+            continue;
+        }
+
+        // Handle backslashes
+        if (current_char == '/') {
+            if (sfen_part != 0) {
+                exit(EXIT_FAILURE);
+            }
+            slash_count++;
+            continue;
+        }
+
+        // Handle part change
+        if (current_char == ' ') {
+            sfen_part++;
+            continue;
+        }
+
+        // Handle team
+        if (sfen_part == 1) {
+            if (slash_count != 8) {
+                exit(EXIT_FAILURE);
+            }
+            _board->team = (current_char == 'w') ? 0 : 1;
             continue;
         }
 
         // If uppercase, it's on the white team (KING UP)
         // If lowercase, it's on the black team (KINGBIS DOWN)
 
-        current_piece = (Piece)malloc(sizeof(struct __s_Piece));
-        current_piece->team = ('a' <= current_char && current_char <= 'z') ? 1 : 0;
-        current_piece->position = board_index;
+        if (sfen_part == 0) {
+            current_piece = (Piece)malloc(sizeof(struct __s_Piece));
+            current_piece->team = ('a' <= current_char && current_char <= 'z') ? 0 : 1;
+            current_piece->position = board_index;
 
-        generatePiece(current_char, current_piece, _textures, is_promoted);
+            generatePiece(current_char, current_piece, _textures, is_promoted);
+            _board->board_piece[board_index] = current_piece;
+            
+            board_index++;
+            is_promoted = 0;
+        } else {
 
-        _board->board_piece[board_index] = current_piece;
+            for (board_index = 0 ; board_index < piece_multiplier ; board_index++) {
+                current_piece = (Piece)malloc(sizeof(struct __s_Piece));
+                current_piece->team = ('a' <= current_char && current_char <= 'z') ? 0 : 1;
+                current_piece->position = 0;
 
-        board_index++;
-        is_promoted = 0;
+                generatePiece(current_char, current_piece, _textures, is_promoted);
+
+                if (current_piece->team) {
+                    _board->second_player_hand = addList((Variant)current_piece, _board->second_player_hand);
+                } else {
+                    _board->first_player_hand = addList((Variant)current_piece, _board->first_player_hand);
+                }
+            }
+
+            piece_multiplier = 1;    
+        }
     }
-    // If these conditions are not met, the piece can be placed at this position
-    return 1;
 }
