@@ -77,12 +77,12 @@ Bool canDropAt(Board board, Piece piece, Position position) {
     }
     // The piece wouldn't be able to move if placed here
     if (piece->team == 0){
-        if (isEmptyList(getMovesAt(piece->moveset->first_team, position))){
+        if (getMovesAt(piece->moveset->first_team, position) == NULL){
             return 0;
         }
     }
     else{
-        if (isEmptyList(getMovesAt(piece->moveset->second_team, position))){
+        if (getMovesAt(piece->moveset->second_team, position) == NULL){
             return 0;
         }
     }

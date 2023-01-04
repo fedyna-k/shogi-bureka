@@ -24,6 +24,7 @@
 // ----- Dependancy -----
 
 
+#include <stdio.h>
 #include "bool.h"
 #include "position.h"
 #include "lists.h"
