@@ -153,7 +153,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
                 _piece->name = setString("General d'argent d'or");
                 _piece->texture = _textures[8];
             } else {
-                _piece->name = setString("Fou");
+                _piece->name = setString("General d'argent");
                 _piece->texture = _textures[7];
             }
         break;
