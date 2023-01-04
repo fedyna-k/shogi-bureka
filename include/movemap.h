@@ -28,6 +28,8 @@
 #include "bool.h"
 #include "position.h"
 #include "lists.h"
+#include "constants.h"
+#include "piece.h"
 
 
 // ----- Constants and structs -----
