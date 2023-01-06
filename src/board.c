@@ -67,7 +67,7 @@ void dropPiece(Board board, Move move, Piece piece) {
     }
 }
 
-// Returns a bool indicating if we can drop the piece 'piece' at the position 'position'
+// Returns a boolean indicating if we can drop the piece 'piece' at the position 'position'
 Bool canDropAt(Board board, Piece piece, Position position) {
     int pawn;
     // The piece can't be placed if :
@@ -77,12 +77,12 @@ Bool canDropAt(Board board, Piece piece, Position position) {
     }
     // The piece wouldn't be able to move if placed here
     if (piece->team == 0){
-        if (isEmptyList(getMovesAt(piece->moveset->first_team, position))){
+        if (canMoveAt(piece->moveset->first_team, position)){
             return 0;
         }
     }
     else{
-        if (isEmptyList(getMovesAt(piece->moveset->second_team, position))){
+        if (canMoveAt(piece->moveset->second_team, position)){
             return 0;
         }
     }
@@ -153,7 +153,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
                 _piece->name = setString("General d'argent d'or");
                 _piece->texture = _textures[8];
             } else {
-                _piece->name = setString("Fou");
+                _piece->name = setString("General d'argent");
                 _piece->texture = _textures[7];
             }
         break;

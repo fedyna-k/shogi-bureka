@@ -51,6 +51,8 @@ Board createNewBoard();
 Board copyBoard(Board board);
 void freeBoard(Board board);
 void makeMove(Board board, Move move);
+void dropPiece(Board board, Move move, Piece piece);
+Bool canDropAt(Board board, Piece piece, Position position);
 void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted);
 void initBoard(Board _board, SDL_Texture **_textures, String _SFEN);
 
