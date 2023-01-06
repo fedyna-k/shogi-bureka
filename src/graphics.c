@@ -193,31 +193,36 @@ SDL_Texture *loadImage(SDL_Renderer *_renderer, const char *_path) {
 SDL_Texture **generatePiecesTextures(SDL_Renderer *_renderer, Bool _is_chess_like) {
     // Create array for texture
     SDL_Texture **all_textures = (SDL_Texture **)malloc(PIECES_COUNT);
-    String path = setString(SPRITE_DIRECTORY), piecePath;
-    char *pieces[] = {
-        "king.png", "kingbis.png",
-        "rook.png", "dragon.png",
-        "bishop.png", "horse.png",
-        "gold.png",
-        "silver.png", "prom_silver.png",
-        "knight.png", "prom_knight.png",
-        "lance.png", "prom_lance.png",
-        "pawn.png", "tokin.png"
+    const char *chess_pieces[] = {
+        "sprites/chess-like/king.png", "sprites/chess-like/kingbis.png",
+        "sprites/chess-like/rook.png", "sprites/chess-like/dragon.png",
+        "sprites/chess-like/bishop.png", "sprites/chess-like/horse.png",
+        "sprites/chess-like/gold.png",
+        "sprites/chess-like/silver.png", "sprites/chess-like/prom_silver.png",
+        "sprites/chess-like/knight.png", "sprites/chess-like/prom_knight.png",
+        "sprites/chess-like/lance.png", "sprites/chess-like/prom_lance.png",
+        "sprites/chess-like/pawn.png", "sprites/chess-like/tokin.png"
+    };
+
+    const char *japanese_pieces[] = {
+        "sprites/japanese/king.png", "sprites/japanese/kingbis.png",
+        "sprites/japanese/rook.png", "sprites/japanese/dragon.png",
+        "sprites/japanese/bishop.png", "sprites/japanese/horse.png",
+        "sprites/japanese/gold.png",
+        "sprites/japanese/silver.png", "sprites/japanese/prom_silver.png",
+        "sprites/japanese/knight.png", "sprites/japanese/prom_knight.png",
+        "sprites/japanese/lance.png", "sprites/japanese/prom_lance.png",
+        "sprites/japanese/pawn.png", "sprites/japanese/tokin.png"
     };
     int i;
-
-    // Get correct path
-    if (_is_chess_like) {
-        path = concat(path, setString(CHESS_SPRITES));
-    } else {
-        path = concat(path, setString(JAPANESE_SPRITES));
-    }
     
     // Generate all pieces textures
     for (i = 0 ; i < PIECES_COUNT ; i++) {
-        piecePath = concat(path, setString(pieces[i]));
-
-        all_textures[i] = loadImage(_renderer, getString(piecePath));
+        if (_is_chess_like) {
+            all_textures[i] = loadImage(_renderer, chess_pieces[i]);
+        } else {
+            all_textures[i] = loadImage(_renderer, japanese_pieces[i]);
+        }
     }
 
     return all_textures;

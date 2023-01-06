@@ -80,7 +80,7 @@ List tailList(List _list){
 void printList(List _list){
     List current = _list;
     if(!isEmptyList(current)){
-        printf("%d\n", _list->element);
+        printf("%p\n", _list->element);
         current = tailList(_list);
     }
 }

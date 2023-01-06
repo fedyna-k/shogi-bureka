@@ -34,7 +34,7 @@ int main (int argc, char **argv) {
     drawBoard(renderer, test_board);    
 
     SDL_RenderPresent(renderer);
-    SDL_Delay((int)20e3);
+    SDL_Delay((int)3e3);
 
     freePiecesTextures(texture_array);
     SDL_DestroyRenderer(renderer);

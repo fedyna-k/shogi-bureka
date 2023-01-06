@@ -47,23 +47,28 @@ Board copyBoard(Board board) {
 
 // Free the board
 void freeBoard(Board board) {
-    freeList(board->board_piece);
+    int i;
+    for (i = 0 ; i < BOARD_SIZE ; i++) {
+        free(board->board_piece[i]);
+    }
+    freeList(board->first_player_hand);
+    freeList(board->second_player_hand);
     free(board);
 }
 
 
 // Returns a board with a move in parameter made
 void makeMove(Board board, Move move){
-    board->board_piece[move.starting_square]->position = move.ending_square;
-    board->board_piece[move.ending_square] = board->board_piece[move.starting_square];
-    board->board_piece[move.starting_square] = NULL;
+    board->board_piece[(int)move.starting_square]->position = move.ending_square;
+    board->board_piece[(int)move.ending_square] = board->board_piece[(int)move.starting_square];
+    board->board_piece[(int)move.starting_square] = NULL;
 }
 
 // Drop the piece 'piece' at the position indicated by move (ending square = position)
 void dropPiece(Board board, Move move, Piece piece) {
     if (canDropAt(board, piece, move.ending_square)){
         piece->position = move.ending_square;
-        board->board_piece[piece->position] = piece;
+        board->board_piece[(int)piece->position] = piece;
     }
 }
 
@@ -72,7 +77,7 @@ Bool canDropAt(Board board, Piece piece, Position position) {
     int pawn;
     // The piece can't be placed if :
     // If a piece is already at this place
-    if (board->board_piece[position] != NULL) {
+    if (board->board_piece[(int)position] != NULL) {
         return 0;
     }
     // The piece wouldn't be able to move if placed here
@@ -104,6 +109,8 @@ Bool canDropAt(Board board, Piece piece, Position position) {
         // A pawn can not be dropped in front of the king to check mate
         // TO DO------------------------------------------------------------
     }
+
+    return 1;
 }
 
 void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted) {
@@ -112,7 +119,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
         case 'k':            
         case 'K':
             _piece->name = setString("Roi");
-            _piece->texture = _textures[_piece->team];
+            _piece->texture = _textures[(int)_piece->team];
         break;
 
         // Rook and dragon
@@ -214,7 +221,7 @@ void initBoard(Board _board, SDL_Texture **_textures, String _SFEN) {
             if (sfen_part == 0) {
                 // Fill in the blanks
                 next_step = board_index + current_char - '0';
-                for (board_index ; board_index < next_step ; board_index++) {
+                for (board_index = board_index ; board_index < next_step ; board_index++) {
                     _board->board_piece[board_index] = NULL;
                 }
             } else {
