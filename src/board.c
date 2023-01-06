@@ -23,7 +23,7 @@ Board createNewBoard() {
     res->team = 0;
 
     return res;
-}/*
+}
 
 // Copy the board
 Board copyBoard(Board board) {
@@ -104,7 +104,7 @@ Bool canDropAt(Board board, Piece piece, Position position) {
         // A pawn can not be dropped in front of the king to check mate
         // TO DO------------------------------------------------------------
     }
-}*/
+}
 
 void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted) {
     switch (_symbol) {
