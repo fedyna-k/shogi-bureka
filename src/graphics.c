@@ -275,6 +275,21 @@ void drawPiece(SDL_Renderer *_renderer, Piece _piece) {
 }
 
 
+void drawPieceXY(SDL_Renderer *_renderer, Piece _piece, int _x, int _y) {
+    float rotation_angle;
+    SDL_Rect drawing_rect;
+
+    // Set informations for drawing
+    drawing_rect = (SDL_Rect){_x - SPRITE_SIZE / 2, _y - SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE};
+    rotation_angle = _piece->team ? 0.0f : 180.0f;
+
+    // Draw piece on renderer
+    if (SDL_RenderCopyEx(_renderer, _piece->texture, NULL, &drawing_rect, rotation_angle, NULL, SDL_FLIP_NONE) != 0) {
+        exitOnError("Impossible d'afficher la piece.");
+    }
+}
+
+
 void drawBoard(SDL_Renderer *_renderer, Board _board) {
     int i;
 

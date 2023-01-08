@@ -17,7 +17,7 @@ all: main
 main: $(OBJ)
 	$(CC) $^ -o $(OUTPUTDIR)/$@ $(CFLAGS)
 	$(RM) $(SOURCEDIR)\*.o
-	$(OUTPUTDIR)/main
+# $(OUTPUTDIR)/main
 
 # All files obj compilation
 
