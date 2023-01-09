@@ -29,7 +29,6 @@
 #include "position.h"
 #include "lists.h"
 #include "constants.h"
-#include "piece.h"
 
 
 // ----- Constants and structs -----
@@ -44,8 +43,8 @@ typedef List *MoveCollection;
 
 Bool canMoveAt(MoveMap _map, Position _position);
 MoveCollection getMovesAt(MoveMap _map, Position _position);
-int getNumberDirections(String piece_name);
-Direction * getDirections(int team, String piece_name);
-MoveMap generateMoveMap(int team, String piece_name);
+// int getNumberDirections(String piece_name);
+// Direction * getDirections(int team, String piece_name);
+// MoveMap generateMoveMap(int team, String piece_name);
 
 #endif
