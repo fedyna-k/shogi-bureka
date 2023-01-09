@@ -237,3 +237,129 @@ MoveMap generateMoveMap(int team, String piece_name){
     }
 }
 */
+
+// Movemap rewritten :
+// 1 Movemap per piece -------------------------------------------------
+
+/**
+ * Get the movemap of Pawns
+ * @param team The team of pawns
+*/
+MoveMap getPawnMovemap(int team){
+    Position position;
+    Position next;
+    // Initialisation of movemap (empty array of an array of lists)
+    MoveMap movemap = malloc(BOARD_SIZE * sizeof(List*));
+
+    for (position = 0; position < BOARD_SIZE; position++){
+        movemap[position] = malloc(DIRECTION_COUNT_PAWN * sizeof(List));
+        movemap[position] = createEmptyList();
+        if (team == 0) {
+            next = nextPosition(position, BOTTOM);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+        }
+        else{
+            next = nextPosition(position, TOP);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+        }
+    }
+
+    return movemap;
+}
+
+/**
+ * Get the movemap of Kings
+*/
+MoveMap getKingMovemap() {
+    Position position;
+    Position next;
+    Direction directions[] = {TOP_LEFT, TOP, TOP_RIGHT, RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT, LEFT};
+    int i;
+    // Initialisation of movemap (empty array of an array of lists)
+    MoveMap movemap = malloc(BOARD_SIZE * sizeof(List*));
+
+    for (position = 0; position < BOARD_SIZE; position++){
+        movemap[position] = malloc(DIRECTION_COUNT_PAWN * sizeof(List));
+        movemap[position] = createEmptyList();
+        for (i = 0; i < 8; i++){
+            next = nextPosition(position, directions[i]);
+            if (next != -1) {
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+        }
+    }
+
+    return movemap;
+}
+
+/**
+ * Get the movemap of the Knight
+ * @param team - The team of the knight
+*/
+MoveMap getKnightMovemap(int team) {
+    Position position;
+    Position next;
+    int i;
+    // Initialisation of movemap (empty array of an array of lists)
+    MoveMap movemap = malloc(BOARD_SIZE * sizeof(List*));
+
+    for (position = 0; position < BOARD_SIZE; position++){
+        movemap[position] = malloc(DIRECTION_COUNT_PAWN * sizeof(List));
+        movemap[position] = createEmptyList();
+        if (team == 0) {
+            next = nextPosition(position, KNIGHT_BL);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+            next = nextPosition(position, KNIGHT_BR);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+        }
+        else{
+            next = nextPosition(position, KNIGHT_TL);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+            next = nextPosition(position, KNIGHT_TR);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+        }
+    }
+
+    return movemap;
+}
+
+/**
+ * Get the movemap of Lance
+ * @param team The team of lance
+*/
+MoveMap getPawnMovemap(int team){
+    Position position;
+    Direction direction;
+    int i;
+    // Initialisation of movemap (empty array of an array of lists)
+    MoveMap movemap = malloc(BOARD_SIZE * sizeof(List*));
+
+    for (position = 0; position < BOARD_SIZE; position++){
+        movemap[position] = malloc(DIRECTION_COUNT_PAWN * sizeof(List));
+        movemap[position] = createEmptyList();
+        if (team == 0) {
+            direction = TOP;
+            while (i < BOARD_LENGTH || nextPosition())
+        }
+        else{
+            next = nextPosition(position, TOP);
+            if (next != -1){
+                movemap[position] = addList((Variant)next, movemap[position]);
+            }
+        }
+    }
+
+    return movemap;
+}

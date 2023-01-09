@@ -177,7 +177,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             }
         break;
 
-        // Knight
+        // Lance
         case 'l':
         case 'L':
             if (_is_promoted) {
