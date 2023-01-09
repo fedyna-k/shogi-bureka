@@ -101,9 +101,6 @@ String setString(char *_string){
         len++;
     }
 
-    // Free the old value (avoids memory leaks)
-    free(result.value);
-
     // Copies the char *
     result.value = _string;
     

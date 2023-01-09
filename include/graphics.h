@@ -56,6 +56,7 @@ SDL_Texture *loadImage(SDL_Renderer *_renderer, const char *_path);
 SDL_Texture **generatePiecesTextures(SDL_Renderer *_renderer, Bool _is_chess_like);
 void freePiecesTextures(SDL_Texture **_texture_array);
 void drawPiece(SDL_Renderer *_renderer, Piece _piece);
+void drawPieceXY(SDL_Renderer *_renderer, Piece _piece, int _x, int _y);
 void drawBoard(SDL_Renderer *_renderer, Board _board);
 
 

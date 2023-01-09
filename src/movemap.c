@@ -27,7 +27,7 @@
  * @param _position The current position of the piece
  */
 Bool canMoveAt(MoveMap _map, Position _position){
-    return _map[_position] != NULL;
+    return _map[(int)_position] != NULL;
 }
 
 
@@ -36,10 +36,11 @@ Bool canMoveAt(MoveMap _map, Position _position){
  */
 MoveCollection getMovesAt(MoveMap _map, Position _position){
     assert(canMoveAt(_map, _position));
-    return _map[_position];
+    return _map[(int)_position];
 }
 
 
+/*
 int getNumberDirections(String piece_name){
     if (isEqualString(piece_name, setString("Pion"))){
         return DIRECTION_COUNT_PAWN;
@@ -72,6 +73,7 @@ int getNumberDirections(String piece_name){
 /* Returns an array with the directions in which the piece passed in parameters can move (no mater its position)
     The directions start from the top-left and turn clockwise
 */
+/*
 Direction * getDirections(int team, String piece_name){
     Direction * directions;
     if (team == 1){
@@ -166,7 +168,6 @@ MoveMap generateMoveMap(int team, String piece_name){
     // Initialisation of Movemap (empty array of *Lists)
     MoveMap movemap = malloc(BOARD_SIZE * sizeof(List *));
     // Empty array to temporarly put positions to put them in the right order in lists
-    int * tmp = malloc(BOARD_LENGTH * sizeof(int));
     int position, i, dir_index, tmp;
     Direction * directions = getDirections(team, piece_name);
     int num_directions = getNumberDirections(piece_name);
@@ -235,3 +236,4 @@ MoveMap generateMoveMap(int team, String piece_name){
         }
     }
 }
+*/
