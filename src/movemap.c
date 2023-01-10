@@ -243,7 +243,7 @@ MoveMap generateMoveMap(int team, String piece_name){
 
 /**
  * Get the movemap of Pawns
- * @param team The team of pawns
+ * @param team - The team of pawns
 */
 MoveMap getPawnMovemap(int team){
     Position position;
@@ -345,7 +345,7 @@ MoveMap getKnightMovemap(int team) {
 
 /**
  * Get the movemap of Lance
- * @param team The team of lance
+ * @param team - The team of lance
 */
 MoveMap getLanceMovemap(int team){
     Position position, next;
@@ -450,6 +450,7 @@ MoveMap getRookMovemap() {
 
 /**
  * Get the movemap of Golden pieces
+ * @param team - The team of the pieces
 */
 MoveMap getGoldenMovemap(int team) {
     Position position;
@@ -477,8 +478,10 @@ MoveMap getGoldenMovemap(int team) {
     }
 
     for (position = 0; position < BOARD_SIZE; position++){
+        // Array of lists of positions
         movemap[position] = malloc(DIRECTION_COUNT_GOLDEN * sizeof(List));
         
+        // Fill it, if can't move in a direction : empty list
         for (i = 0; i < DIRECTION_COUNT_GOLDEN; i++){
             movemap[position][i] = createEmptyList();
             next = nextPosition(position, directions[i]);
@@ -486,6 +489,78 @@ MoveMap getGoldenMovemap(int team) {
                 movemap[position] = addList((Variant)next, movemap[position][i]);
             }
         }
+    }
+
+    return movemap;
+}
+
+/**
+ * Get the movemap of Silver General
+ * @param team - The team of the Silver General
+*/
+MoveMap getSilverMovemap(int team) {
+    Position position;
+    Position next;
+    Direction directions[DIRECTION_COUNT_SILVER];
+    int i;
+    // Initialisation of movemap (empty array of an array of lists)
+    MoveMap movemap = malloc(BOARD_SIZE * sizeof(MoveCollection));
+
+    if (team == 0) {
+        directions[0] = TOP_LEFT;
+        directions[1] = TOP_RIGHT;
+        directions[2] = BOTTOM_RIGHT;
+        directions[3] = BOTTOM;
+        directions[4] = BOTTOM_LEFT;  
+    }
+    else{
+        directions[0] = TOP_LEFT;
+        directions[1] = TOP;
+        directions[2] = TOP_RIGHT;
+        directions[3] = BOTTOM_RIGHT;
+        directions[4] = BOTTOM_LEFT;
+    }
+
+    for (position = 0; position < BOARD_SIZE; position++){
+        // Array of lists of positions
+        movemap[position] = malloc(DIRECTION_COUNT_SILVER * sizeof(List));
+        
+        // Fill it, if can't move in a direction : empty list
+        for (i = 0; i < DIRECTION_COUNT_GOLDEN; i++){
+            movemap[position][i] = createEmptyList();
+            next = nextPosition(position, directions[i]);
+            if (next != -1) {
+                movemap[position] = addList((Variant)next, movemap[position][i]);
+            }
+        }
+    }
+
+    return movemap;
+}
+
+/**
+ * Get the movemap of Dragons
+*/
+MoveMap getDragonMovemap(){
+    Position position;
+    Position next;
+    Direction direction;
+    // Initialisation of movemap (empty array of an array of lists)
+    MoveMap movemap = malloc(BOARD_SIZE * sizeof(MoveCollection));
+
+    for (position = 0; position < BOARD_SIZE; position++){
+        movemap[position] = malloc(DIRECTION_COUNT_PAWN * sizeof(List));
+        // movemap[position] = createEmptyList();
+
+        // // Set the position to test
+        // next = nextPosition(position, BOTTOM);
+        // // Adds the position to the list if it exists
+        // if (next != -1){
+        //     movemap[position] = addList((Variant)next, movemap[position]);
+        // }
+
+
+        // A FAIRE ------------------------------------------------------------
     }
 
     return movemap;
