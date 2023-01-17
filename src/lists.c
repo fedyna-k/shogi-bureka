@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <SDL.h>
 #include "lists.h"
 
 
@@ -80,7 +81,7 @@ List tailList(List _list){
 void printList(List _list){
     List current = _list;
     if(!isEmptyList(current)){
-        printf("%p\n", _list->element);
+        SDL_Log("%p\n", _list->element);
         current = tailList(_list);
     }
 }

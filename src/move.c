@@ -24,9 +24,9 @@
  * createMove(42, 33) // returns the corresponding Move object
  */
 Move createMove(Position _start, Position _end) {
-    Move new_move;
-    new_move.starting_square = _start;
-    new_move.ending_square = _end;
+    Move new_move = (Move)malloc(MOVE_SIZE);
+    new_move->starting_square = _start;
+    new_move->ending_square = _end;
     
     return new_move;
 }

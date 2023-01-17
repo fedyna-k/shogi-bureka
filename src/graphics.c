@@ -55,13 +55,17 @@ SDL_Window *createMainWindow(void) {
         exitOnError("Erreur de chargement de SDL image.");
     }
 
+    if (TTF_Init() == -1) {
+        exitOnError("Erreur de chargement de SDL ttf.");
+    }
+
     printSystemInfo();
 
     // Get window size (Use only first screen)
     SDL_GetDisplayMode(0, 0, &display_mode);
     
     // Create window
-    window = SDL_CreateWindow("Shogi Breaker", 0, 0, display_mode.w, display_mode.h, SDL_WINDOW_FULLSCREEN);
+    window = SDL_CreateWindow("Shogi Breaker", 0, 0, display_mode.w, display_mode.h, 0);//, SDL_WINDOW_FULLSCREEN);
     if (window == NULL) {
         exitOnError("Erreur lors de la creation de fenetre.");
     }
@@ -83,6 +87,8 @@ SDL_Renderer *createRenderer(SDL_Window *_window) {
         exitOnError("Erreur lors de la creation de rendu.");
     }
 
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
     return renderer;
 }
 
@@ -101,7 +107,7 @@ void fillRectangle(SDL_Renderer *_renderer, int _x, int _y, int _width, int _hei
     const SDL_Rect rectangle = {_x, _y, _width, _height};
 
     // Set render color to desired color
-    if (SDL_SetRenderDrawColor(_renderer, _color.r, _color.g, _color.b, SDL_ALPHA_OPAQUE) != 0) {
+    if (SDL_SetRenderDrawColor(_renderer, _color.r, _color.g, _color.b, _color.a) != 0) {
         exitOnError("Impossible de changer la couleur du rendu.");
     }
 
@@ -137,12 +143,18 @@ void fillBackground(SDL_Renderer *_renderer) {
  * Draw the board background on renderer
  * @param _renderer The SDL_Renderer used for drawings
  */
-void drawBoardBackground(SDL_Renderer *_renderer) {
+void drawBoardBackground(SDL_Renderer *_renderer, Move _last_move, Piece _in_hand) {
     int screen_width, screen_height;
     int x_offset, y_offset;
     int x_index, y_index;
     int x, y;
+    Position start = -1, end = -1;
     Color color;
+
+    if (_last_move) {
+        start = _last_move->starting_square;
+        end = _last_move->ending_square;
+    }
 
     // Get screen size and offset
     if (SDL_GetRendererOutputSize(_renderer, &screen_width, &screen_height) != 0) {
@@ -159,6 +171,14 @@ void drawBoardBackground(SDL_Renderer *_renderer) {
             color = ((x_index + y_index) % 2) ? DARK_SQUARES : LIGHT_SQUARES;
 
             fillRectangle(_renderer, x, y, SQUARE_SIZE, SQUARE_SIZE, color);
+            
+            if (start == x_index + y_index * BOARD_LENGTH || end == x_index + y_index * BOARD_LENGTH) {
+                fillRectangle(_renderer, x, y, SQUARE_SIZE, SQUARE_SIZE, GREEN_SQUARE);
+            }
+
+            if (_in_hand && _in_hand->position == x_index + y_index * BOARD_LENGTH) {
+                fillRectangle(_renderer, x, y, SQUARE_SIZE, SQUARE_SIZE, WHITE_SQUARE);
+            }
         }
     }
 }
@@ -298,4 +318,136 @@ void drawBoard(SDL_Renderer *_renderer, Board _board) {
             drawPiece(_renderer, _board->board_piece[i]);
         }
     }
+}
+
+
+void drawHands(SDL_Renderer *_renderer, Board _board) {
+    int screen_width, screen_height;
+    int x_offset, y_offset;
+    int x, y;
+    List hand;
+
+    // Initialize with 0s
+    SDL_Texture *textures[PIECES_COUNT];
+    int counter[PIECES_COUNT];
+    int texture_number = 0;
+    int i;
+    Piece piece_in_display;
+    Piece piece_buffer = (Piece)malloc(sizeof(struct __s_Piece));
+    char *text_buffer = (char *)malloc(2);
+
+    // Get screen size and offset
+    if (SDL_GetRendererOutputSize(_renderer, &screen_width, &screen_height) != 0) {
+        exitOnError("Impossible de recuperer la taille du rendu.");
+    }
+    x_offset = (screen_width - SQUARE_SIZE * BOARD_LENGTH) / 2;
+    y_offset = (screen_height - SQUARE_SIZE * BOARD_LENGTH) / 2;
+
+    // Reset arrays
+    for (i = 0 ; i < PIECES_COUNT ; i++) {
+        textures[i] = NULL;
+        counter[i] = 0;
+    }
+
+    // First hand
+    hand = _board->second_player_hand;
+    while (hand) {
+        piece_in_display = (Piece)hand->element;
+
+        // Add to old texture count
+        for (i = 0 ; i < texture_number ; i++) {
+            if (textures[i] == piece_in_display->texture) {
+                counter[i]++;
+                break;
+            }
+        }
+
+        // Add to new texture
+        if (i == texture_number) {
+            texture_number++;
+            textures[i] = piece_in_display->texture;
+            counter[i] = 1;
+        }
+
+        hand = hand->next;
+    }
+
+    // Display hand
+    if (_board->second_player_hand) {
+        y = 3 * y_offset / 2 + SQUARE_SIZE * BOARD_LENGTH;
+        x = x_offset + SQUARE_SIZE / 2;
+        piece_buffer->team = 1;
+        for (i = 0 ; i < texture_number ; i++) {
+            // Buffer piece and blit it
+            piece_buffer->texture = textures[i];
+            drawPieceXY(_renderer, piece_buffer, x, y);
+
+            // Add the count if the piece is not the only one
+            if (counter[i] != 1) {
+                text_buffer[0] = '0' + counter[i];
+                text_buffer[1] = 0;
+                blitText(_renderer, text_buffer, x + SQUARE_SIZE / 4, y + SQUARE_SIZE / 4, 24);
+            }
+
+            // Go to the next x
+            x += SQUARE_SIZE;
+        }
+    }
+
+    // Reset arrays
+    for (i = 0 ; i < PIECES_COUNT ; i++) {
+        textures[i] = NULL;
+        counter[i] = 0;
+    }
+    texture_number = 0;
+
+    // Second hand
+    hand = _board->first_player_hand;
+    while (hand) {
+        piece_in_display = (Piece)hand->element;
+
+        // Add to old texture count
+        for (i = 0 ; i < texture_number ; i++) {
+            if (textures[i] == piece_in_display->texture) {
+                counter[i]++;
+                break;
+            }
+        }
+
+        // Add to new texture
+        if (i == texture_number) {
+            texture_number++;
+            textures[i] = piece_in_display->texture;
+            counter[i] = 1;
+        }
+
+        hand = hand->next;
+    }
+
+    // Display hand
+    if (_board->first_player_hand) {
+        y = y_offset / 2;
+        x = x_offset + SQUARE_SIZE / 2;
+        piece_buffer->team = 1;
+        for (i = 0 ; i < texture_number ; i++) {
+            // Buffer piece and blit it
+            piece_buffer->texture = textures[i];
+            drawPieceXY(_renderer, piece_buffer, x, y);
+
+            // Add the count if the piece is not the only one
+            if (counter[i] != 1) {
+                text_buffer[0] = '0' + counter[i];
+                text_buffer[1] = 0;
+                blitText(_renderer, text_buffer, x + SQUARE_SIZE / 4, y + SQUARE_SIZE / 4, 24);
+            }
+
+            // Go to the next x
+            x += SQUARE_SIZE;
+        }
+    }
+
+
+    // Free buffer memory to avoid memory leaks
+    free(piece_buffer);
+    free(text_buffer);
 }

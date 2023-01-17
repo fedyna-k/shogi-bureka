@@ -22,14 +22,14 @@
 // ----- Constants and structs -----
 
 
-#define MOVE_SIZE sizeof(Move)
+#define MOVE_SIZE sizeof(struct __s_Move)
 
 struct __s_Move {
     Position starting_square;
     Position ending_square;
 };
 
-typedef struct __s_Move Move;
+typedef struct __s_Move *Move;
 
 
 // ----- Functions -----
