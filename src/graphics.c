@@ -328,9 +328,9 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
     List hand;
 
     // Initialize with 0s
-    SDL_Texture *textures[PIECES_COUNT] = {};
-    int counter[PIECES_COUNT] = {};
-    int texture_number;
+    SDL_Texture *textures[PIECES_COUNT];
+    int counter[PIECES_COUNT];
+    int texture_number = 0;
     int i;
     Piece piece_in_display;
     Piece piece_buffer = (Piece)malloc(sizeof(struct __s_Piece));
@@ -342,6 +342,12 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
     }
     x_offset = (screen_width - SQUARE_SIZE * BOARD_LENGTH) / 2;
     y_offset = (screen_height - SQUARE_SIZE * BOARD_LENGTH) / 2;
+
+    // Reset arrays
+    for (i = 0 ; i < PIECES_COUNT ; i++) {
+        textures[i] = NULL;
+        counter[i] = 0;
+    }
 
     // First hand
     hand = _board->second_player_hand;
@@ -367,9 +373,9 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
     }
 
     // Display hand
-    if (hand) {
-        y = (3 * y_offset - SQUARE_SIZE) / 2 + SQUARE_SIZE * BOARD_LENGTH;
-        x = x_offset;
+    if (_board->second_player_hand) {
+        y = 3 * y_offset / 2 + SQUARE_SIZE * BOARD_LENGTH;
+        x = x_offset + SQUARE_SIZE / 2;
         piece_buffer->team = 1;
         for (i = 0 ; i < texture_number ; i++) {
             // Buffer piece and blit it
@@ -380,13 +386,20 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
             if (counter[i] != 1) {
                 text_buffer[0] = '0' + counter[i];
                 text_buffer[1] = 0;
-                blitText(_renderer, text_buffer, x + SQUARE_SIZE, y + SQUARE_SIZE, 14);
+                blitText(_renderer, text_buffer, x + SQUARE_SIZE / 4, y + SQUARE_SIZE / 4, 24);
             }
 
             // Go to the next x
             x += SQUARE_SIZE;
         }
     }
+
+    // Reset arrays
+    for (i = 0 ; i < PIECES_COUNT ; i++) {
+        textures[i] = NULL;
+        counter[i] = 0;
+    }
+    texture_number = 0;
 
     // Second hand
     hand = _board->first_player_hand;
@@ -412,9 +425,9 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
     }
 
     // Display hand
-    if (hand) {
-        y = (y_offset - SQUARE_SIZE) / 2 + SQUARE_SIZE * BOARD_LENGTH;
-        x = x_offset;
+    if (_board->first_player_hand) {
+        y = y_offset / 2;
+        x = x_offset + SQUARE_SIZE / 2;
         piece_buffer->team = 1;
         for (i = 0 ; i < texture_number ; i++) {
             // Buffer piece and blit it
@@ -425,7 +438,7 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
             if (counter[i] != 1) {
                 text_buffer[0] = '0' + counter[i];
                 text_buffer[1] = 0;
-                blitText(_renderer, text_buffer, x + SQUARE_SIZE, y + SQUARE_SIZE, 14);
+                blitText(_renderer, text_buffer, x + SQUARE_SIZE / 4, y + SQUARE_SIZE / 4, 24);
             }
 
             // Go to the next x
