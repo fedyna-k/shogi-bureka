@@ -59,15 +59,15 @@ void freeBoard(Board board) {
 
 // Returns a board with a move in parameter made
 void makeMove(Board board, Move move){
-    board->board_piece[(int)move.starting_square]->position = move.ending_square;
-    board->board_piece[(int)move.ending_square] = board->board_piece[(int)move.starting_square];
-    board->board_piece[(int)move.starting_square] = NULL;
+    board->board_piece[(int)move->starting_square]->position = move->ending_square;
+    board->board_piece[(int)move->ending_square] = board->board_piece[(int)move->starting_square];
+    board->board_piece[(int)move->starting_square] = NULL;
 }
 
 // Drop the piece 'piece' at the position indicated by move (ending square = position)
 void dropPiece(Board board, Move move, Piece piece) {
-    if (canDropAt(board, piece, move.ending_square)){
-        piece->position = move.ending_square;
+    if (canDropAt(board, piece, move->ending_square)){
+        piece->position = move->ending_square;
         board->board_piece[(int)piece->position] = piece;
     }
 }

@@ -28,17 +28,22 @@ Piece getPieceInHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board) {
 
     if (0 <= x && x < BOARD_LENGTH && 0 <= y && y < BOARD_LENGTH) {
         grabed_piece = _board->board_piece[x + y * BOARD_LENGTH];
-        _board->board_piece[x + y * BOARD_LENGTH] = NULL;
-        return grabed_piece;
+        if (grabed_piece && grabed_piece->team == _board->team) {
+            _board->board_piece[x + y * BOARD_LENGTH] = NULL;
+            return grabed_piece;
+        }
     }
 
     return NULL;
 }
 
-void dropPieceFromHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, Piece _piece) {
+Move dropPieceFromHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, Piece _piece) {
     int screen_width, screen_height;
     int x_offset, y_offset;
     int x, y;
+    Position drop_position;
+    Piece eaten_piece;
+    Move move_made;
 
     // Get screen size and offset
     if (SDL_GetRendererOutputSize(_renderer, &screen_width, &screen_height) != 0) {
@@ -50,9 +55,37 @@ void dropPieceFromHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, 
     x = (_event.button.x - x_offset) / SQUARE_SIZE;
     y = (_event.button.y - y_offset) / SQUARE_SIZE;
 
-    if (0 <= x && x < BOARD_LENGTH && 0 <= y && y < BOARD_LENGTH) {
-        _piece->position = x + y * BOARD_LENGTH;
+    drop_position = x + y * BOARD_LENGTH;
+
+    // Avoid drop not in board
+    if (!(0 <= x && x < BOARD_LENGTH && 0 <= y && y < BOARD_LENGTH)) {
+        _board->board_piece[(int)_piece->position] = _piece;
+        return NULL;
     }
 
-    _board->board_piece[(int)_piece->position] = _piece;
+    // Check if move is valid
+    // ----- TO DO -----
+
+    // Nom Nom Nom
+    if (_board->board_piece[(int)drop_position]) {
+        // Get nom-nom-nomed piece
+        eaten_piece = _board->board_piece[(int)drop_position];
+
+        if (_piece->team) {
+            _board->second_player_hand = addList((Variant)eaten_piece, _board->second_player_hand);
+        } else {
+            _board->first_player_hand = addList((Variant)eaten_piece, _board->first_player_hand);
+        }
+    }
+
+    move_made = createMove(_piece->position, drop_position);
+
+    if (_piece->position != drop_position) {
+        _board->team = 1 - _board->team;
+    }
+
+    _piece->position = drop_position;
+    _board->board_piece[(int)drop_position] = _piece;
+
+    return move_made;
 }
