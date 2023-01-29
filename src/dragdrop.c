@@ -10,7 +10,7 @@
 #include "dragdrop.h"
 
 
-Piece getPieceInHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board) {
+Piece getPieceInHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, Position *_piece_moves) {
     int screen_width, screen_height;
     int x_offset, y_offset;
     int x, y;
@@ -30,6 +30,7 @@ Piece getPieceInHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board) {
         grabed_piece = _board->board_piece[x + y * BOARD_LENGTH];
         if (grabed_piece && grabed_piece->team == _board->team) {
             _board->board_piece[x + y * BOARD_LENGTH] = NULL;
+            getPieceMoves(_board, grabed_piece, _piece_moves);
             return grabed_piece;
         }
     }
@@ -37,10 +38,12 @@ Piece getPieceInHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board) {
     return NULL;
 }
 
-Move dropPieceFromHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, Piece _piece) {
+Move dropPieceFromHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, Piece _piece, Position *_piece_moves) {
     int screen_width, screen_height;
     int x_offset, y_offset;
     int x, y;
+    int i = 0;
+    Bool is_valid;
     Position drop_position;
     Piece eaten_piece;
     Move move_made;
@@ -63,13 +66,26 @@ Move dropPieceFromHand(SDL_Renderer *_renderer, SDL_Event _event, Board _board, 
         return NULL;
     }
 
-    // Check if move is valid
-    // ----- TO DO -----
+    // Check if move is in valid position
+    is_valid = 0;
+    while (_piece_moves[i] != -1 && !is_valid) {
+        if (_piece_moves[i] == drop_position) {
+            is_valid = 1;
+        }
+        i++;
+    }
+
+    if (!is_valid) {
+        _board->board_piece[(int)_piece->position] = _piece;
+        return NULL;
+    }
+
 
     // Nom Nom Nom
     if (_board->board_piece[(int)drop_position]) {
         // Get nom-nom-nomed piece
         eaten_piece = _board->board_piece[(int)drop_position];
+        eaten_piece->team = _piece->team;
 
         if (_piece->team) {
             _board->second_player_hand = addList((Variant)eaten_piece, _board->second_player_hand);

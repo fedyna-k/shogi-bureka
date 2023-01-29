@@ -6,4 +6,4 @@
  * Encoding for the piece.
  */
 
-
+#include "piece.h"

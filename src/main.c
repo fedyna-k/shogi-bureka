@@ -15,13 +15,13 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 int main (int argc, char **argv) {
     // SDL VARIABLES
     SDL_Window *window = createMainWindow();
     SDL_Renderer *renderer = createRenderer(window);
     SDL_Texture **texture_array = generatePiecesTextures(renderer, 0);
     SDL_Event event;
+
 
     // Board game
     Board board = createNewBoard();
@@ -32,6 +32,7 @@ int main (int argc, char **argv) {
     Piece piece_in_hand = NULL;
     int mousex, mousey;
     Move last_move = NULL, move_made;
+    Position *possible_moves = (Position *)malloc(BOARD_LENGTH * DIRECTION_COUNT_KING);
 
     // Timer variables
     time_t timer_start = time(NULL);
@@ -48,6 +49,11 @@ int main (int argc, char **argv) {
     while (mainloop) {
         fillBackground(renderer);    
         drawBoardBackground(renderer, last_move, piece_in_hand);
+
+        if (piece_in_hand) {
+            drawPossibleMovements(renderer, possible_moves);
+        }
+
         drawBoard(renderer, board);
         drawHands(renderer, board);
         // blitThinText(renderer, "Par Bastien & Kevin", 10, 10, 18);
@@ -76,11 +82,11 @@ int main (int argc, char **argv) {
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
-                piece_in_hand = getPieceInHand(renderer, event, board);
+                piece_in_hand = getPieceInHand(renderer, event, board, possible_moves);
             }
 
             if (event.type == SDL_MOUSEBUTTONUP && piece_in_hand) {
-                move_made = dropPieceFromHand(renderer, event, board, piece_in_hand);
+                move_made = dropPieceFromHand(renderer, event, board, piece_in_hand, possible_moves);
                 if (move_made && move_made->starting_square != move_made->ending_square) {
                     last_move = move_made;
                 }

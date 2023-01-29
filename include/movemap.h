@@ -25,6 +25,8 @@
 
 
 #include <stdio.h>
+#include <assert.h>
+#include <stdlib.h>
 #include "bool.h"
 #include "position.h"
 #include "lists.h"
@@ -43,6 +45,16 @@ typedef List *MoveCollection;
 
 Bool canMoveAt(MoveMap _map, Position _position);
 MoveCollection getMovesAt(MoveMap _map, Position _position);
+MoveMap getPawnMovemap(int team);
+MoveMap getKingMovemap(void);
+MoveMap getKnightMovemap(int team);
+MoveMap getLanceMovemap(int team);
+MoveMap getBishopMovemap(void);
+MoveMap getRookMovemap(void);
+MoveMap getGoldenMovemap(int team);
+MoveMap getSilverMovemap(int team);
+MoveMap getDragonMovemap(void);
+MoveMap getHorseMovemap(void);
 
 
 #endif

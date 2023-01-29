@@ -53,8 +53,8 @@ void freeBoard(Board board);
 void makeMove(Board board, Move move);
 void dropPiece(Board board, Move move, Piece piece);
 Bool canDropAt(Board board, Piece piece, Position position);
-void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted);
+void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted, Moveset *_all_movesets);
 void initBoard(Board _board, SDL_Texture **_textures, String _SFEN);
-
+void getPieceMoves(Board _board, Piece _piece, Position *_possible_moves);
 
 #endif

@@ -14,6 +14,7 @@
 // ----- Dependancy -----
 
 
+#include <stdlib.h>
 #include "movemap.h"
 #include "position.h"
 
@@ -34,6 +35,7 @@ typedef struct __s_Moveset *Moveset;
 
 
 MoveMap getMoveMap(Moveset _set, char _team);
+Moveset *generateMovesets(void);
 
 
 #endif

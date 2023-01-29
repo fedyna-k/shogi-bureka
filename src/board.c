@@ -113,13 +113,14 @@ Bool canDropAt(Board board, Piece piece, Position position) {
     return 1;
 }
 
-void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted) {
+void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted, Moveset *_all_movesets) {
     switch (_symbol) {
         // King
         case 'k':            
         case 'K':
             _piece->name = setString("Roi");
             _piece->texture = _textures[(int)_piece->team];
+            _piece->moveset = _all_movesets[0];
         break;
 
         // Rook and dragon
@@ -128,9 +129,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Dragon");
                 _piece->texture = _textures[3];
+                _piece->moveset = _all_movesets[4];
             } else {
                 _piece->name = setString("Tour");
                 _piece->texture = _textures[2];
+                _piece->moveset = _all_movesets[2];
             }
         break;
 
@@ -140,9 +143,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Horse");
                 _piece->texture = _textures[5];
+                _piece->moveset = _all_movesets[3];
             } else {
                 _piece->name = setString("Fou");
                 _piece->texture = _textures[4];
+                _piece->moveset = _all_movesets[1];
             }
         break;
 
@@ -151,6 +156,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
         case 'G':
             _piece->name = setString("General d'or");
             _piece->texture = _textures[6];
+            _piece->moveset = _all_movesets[5];
         break;
 
         // Silver
@@ -159,9 +165,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("General d'argent d'or");
                 _piece->texture = _textures[8];
+                _piece->moveset = _all_movesets[5];
             } else {
                 _piece->name = setString("General d'argent");
                 _piece->texture = _textures[7];
+                _piece->moveset = _all_movesets[6];
             }
         break;
 
@@ -171,9 +179,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Cavalier d'or");
                 _piece->texture = _textures[10];
+                _piece->moveset = _all_movesets[5];
             } else {
                 _piece->name = setString("Cavalier");
                 _piece->texture = _textures[9];
+                _piece->moveset = _all_movesets[7];
             }
         break;
 
@@ -183,9 +193,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Lancier d'or");
                 _piece->texture = _textures[12];
+                _piece->moveset = _all_movesets[5];
             } else {
                 _piece->name = setString("Lancier");
                 _piece->texture = _textures[11];
+                _piece->moveset = _all_movesets[8];
             }
         break;
 
@@ -195,9 +207,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Pion d'or");
                 _piece->texture = _textures[14];
+                _piece->moveset = _all_movesets[5];
             } else {
                 _piece->name = setString("Pion");
                 _piece->texture = _textures[13];
+                _piece->moveset = _all_movesets[9];
             }
         break;
     }
@@ -208,8 +222,10 @@ void initBoard(Board _board, SDL_Texture **_textures, String _SFEN) {
     int string_parser, board_index = 0, next_step, piece_multiplier = 1;
     int slash_count = 0, sfen_part = 0;
     char current_char;
-    Bool is_promoted;
+    Bool is_promoted = 0;
     Piece current_piece;
+    Moveset *all_moveset = generateMovesets();
+    int i;
 
     // Loop through SFEN string
     for (string_parser = 0 ; string_parser < _SFEN.length ; string_parser++) {
@@ -227,72 +243,104 @@ void initBoard(Board _board, SDL_Texture **_textures, String _SFEN) {
             } else {
                 piece_multiplier = current_char - '0';
             }
-            continue;
         }
 
         // Handle promoted pieces
-        if (current_char == '+') {
+        else if (current_char == '+') {
             if (sfen_part != 0) {
                 exit(EXIT_FAILURE);
             }
             is_promoted = 1;
-            continue;
         }
 
         // Handle backslashes
-        if (current_char == '/') {
+        else if (current_char == '/') {
             if (sfen_part != 0) {
                 exit(EXIT_FAILURE);
             }
             slash_count++;
-            continue;
         }
 
         // Handle part change
-        if (current_char == ' ') {
+        else if (current_char == ' ') {
             sfen_part++;
-            continue;
         }
 
         // Handle team
-        if (sfen_part == 1) {
+        else if (sfen_part == 1) {
             if (slash_count != 8) {
                 exit(EXIT_FAILURE);
             }
             _board->team = (current_char == 'w') ? 0 : 1;
-            continue;
         }
 
         // If uppercase, it's on the white team (KING UP)
         // If lowercase, it's on the black team (KINGBIS DOWN)
-
-        if (sfen_part == 0) {
-            current_piece = (Piece)malloc(sizeof(struct __s_Piece));
-            current_piece->team = ('a' <= current_char && current_char <= 'z') ? 0 : 1;
-            current_piece->position = board_index;
-
-            generatePiece(current_char, current_piece, _textures, is_promoted);
-            _board->board_piece[board_index] = current_piece;
-            
-            board_index++;
-            is_promoted = 0;
-        } else {
-
-            for (board_index = 0 ; board_index < piece_multiplier ; board_index++) {
+        else {
+            if (sfen_part == 0) {
                 current_piece = (Piece)malloc(sizeof(struct __s_Piece));
                 current_piece->team = ('a' <= current_char && current_char <= 'z') ? 0 : 1;
-                current_piece->position = 0;
+                current_piece->position = (Position)board_index;
 
-                generatePiece(current_char, current_piece, _textures, is_promoted);
+                generatePiece(current_char, current_piece, _textures, is_promoted, all_moveset);
+                _board->board_piece[board_index] = current_piece;
+                
+                board_index++;
+                is_promoted = 0;
+            } else {
 
-                if (current_piece->team) {
-                    _board->second_player_hand = addList((Variant)current_piece, _board->second_player_hand);
-                } else {
-                    _board->first_player_hand = addList((Variant)current_piece, _board->first_player_hand);
+                for (board_index = 0 ; board_index < piece_multiplier ; board_index++) {
+                    current_piece = (Piece)malloc(sizeof(struct __s_Piece));
+                    current_piece->team = ('a' <= current_char && current_char <= 'z') ? 0 : 1;
+                    current_piece->position = 0;
+
+                    generatePiece(current_char, current_piece, _textures, is_promoted, all_moveset);
+
+                    if (current_piece->team) {
+                        _board->second_player_hand = addList((Variant)current_piece, _board->second_player_hand);
+                    } else {
+                        _board->first_player_hand = addList((Variant)current_piece, _board->first_player_hand);
+                    }
                 }
-            }
 
-            piece_multiplier = 1;    
+                piece_multiplier = 1;    
+            }
         }
     }
+
+    for (i = 0 ; i < BOARD_SIZE ; i++) {
+        if (_board->board_piece[i] && !_board->board_piece[i]->texture) {
+            SDL_Log("Nom : %s\nTexture : %p\nMoveset : %p", _board->board_piece[i]->name.value, _board->board_piece[i]->texture, _board->board_piece[i]->moveset);
+        }
+    }
+}
+
+
+/**
+ * Return an array of all possible moves for a given piece 
+ */
+void getPieceMoves(Board _board, Piece _piece, Position *_possible_moves) {
+    MoveMap piece_movemap = getMoveMap(_piece->moveset, _piece->team);
+    MoveCollection directions = piece_movemap[(int)_piece->position];
+    List current_position;
+    Position possible_position;
+    int i, j = 0;
+
+    for (i = 0 ; i < _piece->moveset->direction_number ; i++) {
+        current_position = directions[i];
+
+        // Loop for sliding pieces
+        while (current_position) {
+            possible_position = (Position)(int)current_position->element;
+            if (_board->board_piece[(int)possible_position] != NULL) {
+                if (_board->board_piece[(int)possible_position]->team != _piece->team) {
+                    _possible_moves[j++] = possible_position;
+                }
+                break;
+            }
+            _possible_moves[j++] = possible_position;
+            current_position = current_position->next;
+        }
+    }
+    _possible_moves[j] = -1;
 }
