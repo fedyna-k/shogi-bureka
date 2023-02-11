@@ -120,6 +120,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
         case 'K':
             _piece->name = setString("Roi");
             _piece->texture = _textures[(int)_piece->team];
+            _piece->value = 300;
         break;
 
         // Rook and dragon
@@ -128,9 +129,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Dragon");
                 _piece->texture = _textures[3];
+                _piece->value = 13;
             } else {
                 _piece->name = setString("Tour");
                 _piece->texture = _textures[2];
+                _piece->value = 9;
             }
         break;
 
@@ -140,9 +143,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Horse");
                 _piece->texture = _textures[5];
+                _piece->value = 12;
             } else {
                 _piece->name = setString("Fou");
                 _piece->texture = _textures[4];
+                _piece->value = 8;
             }
         break;
 
@@ -151,6 +156,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
         case 'G':
             _piece->name = setString("General d'or");
             _piece->texture = _textures[6];
+            _piece->value = 5;
         break;
 
         // Silver
@@ -163,6 +169,7 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
                 _piece->name = setString("General d'argent");
                 _piece->texture = _textures[7];
             }
+            _piece->value = 5;
         break;
 
         // Knight
@@ -171,9 +178,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Cavalier d'or");
                 _piece->texture = _textures[10];
+                _piece->value = 5;
             } else {
                 _piece->name = setString("Cavalier");
                 _piece->texture = _textures[9];
+                _piece->value = 3;
             }
         break;
 
@@ -183,9 +192,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Lancier d'or");
                 _piece->texture = _textures[12];
+                _piece->value = 5;
             } else {
                 _piece->name = setString("Lancier");
                 _piece->texture = _textures[11];
+                _piece->value = 3;
             }
         break;
 
@@ -195,9 +206,11 @@ void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is
             if (_is_promoted) {
                 _piece->name = setString("Pion d'or");
                 _piece->texture = _textures[14];
+                _piece->value = 5;
             } else {
                 _piece->name = setString("Pion");
                 _piece->texture = _textures[13];
+                _piece->value = 1;
             }
         break;
     }

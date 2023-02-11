@@ -27,6 +27,7 @@
 struct __s_Piece {
     String name;
     SDL_Texture *texture;
+    int value;
     Bool team;
     Position position;
     Moveset moveset;
