@@ -290,6 +290,7 @@ void drawPiece(SDL_Renderer *_renderer, Piece _piece) {
 
     // Draw piece on renderer
     if (SDL_RenderCopyEx(_renderer, _piece->texture, NULL, &drawing_rect, rotation_angle, NULL, SDL_FLIP_NONE) != 0) {
+        SDL_Log("Piece is %s", _piece->name.value);
         exitOnError("Impossible d'afficher la piece.");
     }
 }
@@ -450,4 +451,25 @@ void drawHands(SDL_Renderer *_renderer, Board _board) {
     // Free buffer memory to avoid memory leaks
     free(piece_buffer);
     free(text_buffer);
+}
+
+
+void drawPossibleMovements(SDL_Renderer *_renderer, Position *_piece_moves) {
+    int i = 0;
+    int screen_width, screen_height, x_offset, y_offset, x, y;
+
+    // Get screen size and offset
+    if (SDL_GetRendererOutputSize(_renderer, &screen_width, &screen_height) != 0) {
+        exitOnError("Impossible de recuperer la taille du rendu.");
+    }
+    x_offset = (screen_width - SQUARE_SIZE * BOARD_LENGTH) / 2;
+    y_offset = (screen_height - SQUARE_SIZE * BOARD_LENGTH) / 2;
+
+    // Draw all movements
+    while (_piece_moves[i] != -1) {
+        x = x_offset + getX(_piece_moves[i]) * SQUARE_SIZE;
+        y = y_offset + getY(_piece_moves[i]) * SQUARE_SIZE;
+        fillRectangle(_renderer, x, y, SQUARE_SIZE, SQUARE_SIZE, BLUE_SQUARE);
+        i++;
+    }
 }

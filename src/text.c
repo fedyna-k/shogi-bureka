@@ -26,6 +26,8 @@ void blitThinText(SDL_Renderer *_renderer, const char *_text, int _x, int _y, in
     SDL_FreeSurface(text_surface);
 
     SDL_RenderCopy(_renderer, text, NULL, &render_rect);
+    SDL_DestroyTexture(text);
+    TTF_CloseFont(font);
 }
 
 
@@ -45,6 +47,8 @@ void blitText(SDL_Renderer *_renderer, const char *_text, int _x, int _y, int _s
     SDL_FreeSurface(text_surface);
 
     SDL_RenderCopy(_renderer, text, NULL, &render_rect);
+    SDL_DestroyTexture(text);
+    TTF_CloseFont(font);
 }
 
 
@@ -86,4 +90,7 @@ void blitTimerAndPlayer(SDL_Renderer *_renderer, const char *_text, Bool _team) 
     SDL_FreeSurface(text_surface);
 
     SDL_RenderCopy(_renderer, text, NULL, &render_rect);
+    SDL_DestroyTexture(text);
+    TTF_CloseFont(thin_font);
+    TTF_CloseFont(normal_font);
 }

@@ -43,6 +43,7 @@ typedef struct __s_Color Color;
 #define BACKGROUND_COLOR (Color){(char)42u, (char)42u, (char)42u, (char)255u}
 #define GREEN_SQUARE (Color){(char)25u, (char)225u, (char)85u, (char)100u}
 #define WHITE_SQUARE (Color){(char)255u, (char)255u, (char)255u, (char)100u}
+#define BLUE_SQUARE (Color){(char)25u, (char)85u, (char)225u, (char)100u}
 
 
 // ----- Functions -----
@@ -64,6 +65,6 @@ void drawPiece(SDL_Renderer *_renderer, Piece _piece);
 void drawPieceXY(SDL_Renderer *_renderer, Piece _piece, int _x, int _y);
 void drawBoard(SDL_Renderer *_renderer, Board _board);
 void drawHands(SDL_Renderer *_renderer, Board _board);
-
+void drawPossibleMovements(SDL_Renderer *_renderer, Position *_piece_moves);
 
 #endif

@@ -11,10 +11,10 @@
 #include "graphics.h"
 #include "dragdrop.h"
 #include "text.h"
+#include "ia.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 
 int main (int argc, char **argv) {
     // SDL VARIABLES
@@ -22,6 +22,7 @@ int main (int argc, char **argv) {
     SDL_Renderer *renderer = createRenderer(window);
     SDL_Texture **texture_array = generatePiecesTextures(renderer, 0);
     SDL_Event event;
+
 
     // Board game
     Board board = createNewBoard();
@@ -32,6 +33,7 @@ int main (int argc, char **argv) {
     Piece piece_in_hand = NULL;
     int mousex, mousey;
     Move last_move = NULL, move_made;
+    Position *possible_moves = (Position *)malloc(BOARD_LENGTH * DIRECTION_COUNT_KING);
 
     // Timer variables
     time_t timer_start = time(NULL);
@@ -48,6 +50,11 @@ int main (int argc, char **argv) {
     while (mainloop) {
         fillBackground(renderer);    
         drawBoardBackground(renderer, last_move, piece_in_hand);
+
+        if (piece_in_hand) {
+            drawPossibleMovements(renderer, possible_moves);
+        }
+
         drawBoard(renderer, board);
         drawHands(renderer, board);
         // blitThinText(renderer, "Par Bastien & Kevin", 10, 10, 18);
@@ -58,13 +65,17 @@ int main (int argc, char **argv) {
         }
 
         // Blit timer on screen and player
-        diff = difftime(time(NULL), timer_start);
+        /*diff = difftime(time(NULL), timer_start);
         seconds = diff % 60;
         minutes = diff / 60;
         sprintf(timer_text, "%02d:%02d", minutes, seconds);
         blitTimerAndPlayer(renderer, timer_text, board->team);
-
+*/
         SDL_RenderPresent(renderer);
+
+        if (board->team == 0) {
+            makeTrueMove(board);
+        }
 
         // Event quit on keyboard
         while (SDL_PollEvent(&event) != 0) {
@@ -76,11 +87,11 @@ int main (int argc, char **argv) {
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
-                piece_in_hand = getPieceInHand(renderer, event, board);
+                piece_in_hand = getPieceInHand(renderer, event, board, possible_moves);
             }
 
             if (event.type == SDL_MOUSEBUTTONUP && piece_in_hand) {
-                move_made = dropPieceFromHand(renderer, event, board, piece_in_hand);
+                move_made = dropPieceFromHand(renderer, event, board, piece_in_hand, possible_moves);
                 if (move_made && move_made->starting_square != move_made->ending_square) {
                     last_move = move_made;
                 }
