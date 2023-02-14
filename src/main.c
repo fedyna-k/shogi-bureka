@@ -11,6 +11,7 @@
 #include "graphics.h"
 #include "dragdrop.h"
 #include "text.h"
+#include "ia.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -64,13 +65,17 @@ int main (int argc, char **argv) {
         }
 
         // Blit timer on screen and player
-        diff = difftime(time(NULL), timer_start);
+        /*diff = difftime(time(NULL), timer_start);
         seconds = diff % 60;
         minutes = diff / 60;
         sprintf(timer_text, "%02d:%02d", minutes, seconds);
         blitTimerAndPlayer(renderer, timer_text, board->team);
-
+*/
         SDL_RenderPresent(renderer);
+
+        if (board->team == 0) {
+            makeTrueMove(board);
+        }
 
         // Event quit on keyboard
         while (SDL_PollEvent(&event) != 0) {

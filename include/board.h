@@ -39,6 +39,9 @@ struct __s_Board {
     // Binary numbers of BOARD_LENGTH bits. 1 means a pawn is in the column of the bit i, 0 means there is no pawn
     int first_player_pawn;
     int second_player_pawn;
+    // Spaghetti code incomming
+    SDL_Texture **all_textures;
+    Moveset *all_movesets;
 };
 
 typedef struct __s_Board * Board;
@@ -54,6 +57,7 @@ void makeMove(Board board, Move move);
 void dropPiece(Board board, Move move, Piece piece);
 Bool canDropAt(Board board, Piece piece, Position position);
 void generatePiece(char _symbol, Piece _piece, SDL_Texture **_textures, Bool _is_promoted, Moveset *_all_movesets);
+void promotePiece(Piece _piece, SDL_Texture **_textures, Moveset *_all_movesets);
 void initBoard(Board _board, SDL_Texture **_textures, String _SFEN);
 void getPieceMoves(Board _board, Piece _piece, Position *_possible_moves);
 
